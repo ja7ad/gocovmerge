@@ -2,7 +2,6 @@ package internal
 
 import (
 	"bytes"
-	"golang.org/x/tools/cover"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,14 +10,14 @@ import (
 
 func TestMergeProfilesFromTestdata(t *testing.T) {
 	files := []string{"unit_coverage.txt", "integration_coverage.txt"}
-	var profiles []*cover.Profile
+	var profiles []*Profile
 	for _, fname := range files {
 		path := filepath.Join("testdata", fname)
 		data, err := os.ReadFile(path)
 		if err != nil {
 			t.Fatalf("failed to read %s: %v", fname, err)
 		}
-		parsed, err := cover.ParseProfilesFromReader(strings.NewReader(string(data)))
+		parsed, err := ParseProfilesFromReader(strings.NewReader(string(data)))
 		if err != nil {
 			t.Fatalf("failed to parse %s: %v", fname, err)
 		}

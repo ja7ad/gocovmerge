@@ -2,13 +2,12 @@ package internal
 
 import (
 	"fmt"
-	"golang.org/x/tools/cover"
 	"io"
 	"log"
 	"sort"
 )
 
-func MergeProfiles(p *cover.Profile, merge *cover.Profile) {
+func MergeProfiles(p *Profile, merge *Profile) {
 	if p.Mode != merge.Mode {
 		log.Fatalf("cannot merge profiles with different modes")
 	}
@@ -20,7 +19,7 @@ func MergeProfiles(p *cover.Profile, merge *cover.Profile) {
 	}
 }
 
-func MergeProfileBlock(p *cover.Profile, pb cover.ProfileBlock, startIndex int) int {
+func MergeProfileBlock(p *Profile, pb ProfileBlock, startIndex int) int {
 	sortFunc := func(i int) bool {
 		pi := p.Blocks[i+startIndex]
 		return pi.StartLine >= pb.StartLine && (pi.StartLine != pb.StartLine || pi.StartCol >= pb.StartCol)
@@ -56,14 +55,14 @@ func MergeProfileBlock(p *cover.Profile, pb cover.ProfileBlock, startIndex int) 
 				log.Fatalf("OVERLAP AFTER: %v %v %v", p.FileName, pa, pb)
 			}
 		}
-		p.Blocks = append(p.Blocks, cover.ProfileBlock{})
+		p.Blocks = append(p.Blocks, ProfileBlock{})
 		copy(p.Blocks[i+1:], p.Blocks[i:])
 		p.Blocks[i] = pb
 	}
 	return i + 1
 }
 
-func AddProfile(profiles []*cover.Profile, p *cover.Profile) []*cover.Profile {
+func AddProfile(profiles []*Profile, p *Profile) []*Profile {
 	i := sort.Search(len(profiles), func(i int) bool { return profiles[i].FileName >= p.FileName })
 	if i < len(profiles) && profiles[i].FileName == p.FileName {
 		MergeProfiles(profiles[i], p)
@@ -75,7 +74,7 @@ func AddProfile(profiles []*cover.Profile, p *cover.Profile) []*cover.Profile {
 	return profiles
 }
 
-func DumpProfiles(profiles []*cover.Profile, out io.Writer) {
+func DumpProfiles(profiles []*Profile, out io.Writer) {
 	if len(profiles) == 0 {
 		return
 	}

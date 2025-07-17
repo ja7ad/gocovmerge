@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"github.com/ja7ad/gocovmerge/internal"
-	"golang.org/x/tools/cover"
 	"log"
 	"os"
 )
@@ -11,10 +10,10 @@ import (
 func main() {
 	flag.Parse()
 
-	var merged []*cover.Profile
+	var merged []*internal.Profile
 
 	for _, file := range flag.Args() {
-		profiles, err := cover.ParseProfiles(file)
+		profiles, err := internal.ParseProfiles(file)
 		if err != nil {
 			log.Fatalf("failed to parse profiles: %v", err)
 		}
