@@ -7,7 +7,7 @@
 To install the latest version, run:
 
 ```
-go install github.com/ja7ad/cmd/gocovmerge@latest
+go install github.com/ja7ad/gocovmerge/cmd/gocovmerge@latest
 ```
 
 This will install the `gocovmerge` binary into your `$GOPATH/bin` or `$GOBIN` directory.
